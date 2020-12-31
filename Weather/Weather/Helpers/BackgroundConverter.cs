@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Globalization;
 using System.Text;
 using Weather.Models;
@@ -14,10 +15,13 @@ namespace Weather.Helpers
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var weather = (Current)value;
+            var weather = (WeatherInfo)value;
 
-            return weather.Dt>weather.Sunrise && weather.Dt<weather.Sunset? Application.Current.Resources["BackgroundDay"] : Application.Current.Resources["BackgroundNight"];
-          
+            var Dt = DateTimeOffset.FromUnixTimeSeconds(weather.Dt).ToUniversalTime().TimeOfDay;
+            var Sunrise = DateTimeOffset.FromUnixTimeSeconds(weather.Sunrise).ToUniversalTime().TimeOfDay;
+            var Sunset = DateTimeOffset.FromUnixTimeSeconds(weather.Sunset).ToUniversalTime().TimeOfDay; 
+
+            return Dt > Sunrise && Dt < Sunset ? Application.Current.Resources["BackgroundDay"] : Application.Current.Resources["BackgroundNight"];
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

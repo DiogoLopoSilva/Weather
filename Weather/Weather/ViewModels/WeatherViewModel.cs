@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -8,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Weather.Models;
 using Weather.Services;
+using Weather.Views;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -22,6 +24,8 @@ namespace Weather.ViewModels
         private Location _currentLocation;
 
         public Command LoadItemsCommand { get; }
+
+        public Command<Daily> ItemTapped { get; }
 
         public WeatherData LocalWeatherData { get; set; }
 
@@ -86,7 +90,19 @@ namespace Weather.ViewModels
         {
             Title = "Weather";
 
+            ItemTapped = new Command<Daily>(OnItemSelected);
+
             LoadLocalCity();
+        }
+
+        async void OnItemSelected(Daily item)
+        {
+            if (item == null)
+                return;
+
+            item.City = City;
+
+            await Shell.Current.Navigation.PushAsync(new WeatherDetailPage(item));
         }
 
         public void LoadLocalData()
@@ -202,7 +218,7 @@ namespace Weather.ViewModels
             if (!response.IsSuccess)
             {
                 await App.Current.MainPage.DisplayAlert("ERROR", "Error message", "Accept");
-                return;
+                Process.GetCurrentProcess().CloseMainWindow();
             }
 
             WeatherData = (WeatherData)response.Result;

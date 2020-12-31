@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Weather.Views.WeatherDetailPage"
+             xmlns:local="clr-namespace:Weather.Helpers"
+             Title="{Binding Title}">
+
+
+    <ContentPage.Resources>
+        <local:DateConverter x:Key="DateConverter"/>
+        <local:WeatherImageConverter x:Key="WeatherImageConverter"/>
+        <local:BackgroundConverter x:Key="BackgroundConverter"/>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <Frame Grid.Row="1" Margin="5,5,5,5" Padding="20" x:Name="WeatherBackground" BackgroundColor="{Binding Item, Converter={StaticResource BackgroundConverter}}" HasShadow="True" CornerRadius="10">
+            <StackLayout>
+
+                <Image Source="{Binding Item.Weather[0].Icon, Converter={StaticResource WeatherImageConverter}}" HeightRequest="100"/>
+
+
+                <Label  Text="{Binding Item.Dt, Converter={StaticResource DateConverter}, ConverterParameter='Weekday'}" Margin="0,10" />
+                <Label Text="{Binding Item.Sunrise, Converter={StaticResource DateConverter}, StringFormat='Sunrise: {0}'}" />
+                <Label Text="{Binding Item.Sunset, Converter={StaticResource DateConverter}, StringFormat='Sunset: {0}'}"/>
+
+                <Label Text="Temperatures" Margin="0, 10, 0, 0"/>
+                <Frame BackgroundColor="{Binding BackgroundColor, Source={x:Reference WeatherBackground}}" CornerRadius="10" HasShadow="True" Opacity="0.7" Margin="0, 0, 0, 10">
+                    <StackLayout>
+                    <Label Text="{Binding Item.Temp.Min, StringFormat='Min: {0:N0}°C'}" />
+                    <Label Text="{Binding Item.Temp.Max, StringFormat='Max: {0:N0}°C'}" />
+                    <Label Text="{Binding Item.Temp.Morn, StringFormat='Morning: {0:N0}°C'}" />
+                    <Label Text="{Binding Item.Temp.Day, StringFormat='Day: {0:N0}°C'}" />
+                    <Label Text="{Binding Item.Temp.Eve, StringFormat='Evening: {0:N0}°C'}" />
+                    <Label Text="{Binding Item.Temp.Night, StringFormat='Night: {0:N0}°C'}" />
+                    </StackLayout>
+                </Frame>
+
+                <Label Text="{Binding Item.Pressure, StringFormat='Pressure: {0} hPa'}" />
+                <Label Text="{Binding Item.Humidity, StringFormat='Humidity: {0}%'}" />
+                <Label Text="{Binding Item.WindSpeed, StringFormat='Wind Speed: {0} m/s'}" />
+                <Label Text="{Binding Item.WindDeg, StringFormat='Wind Direction: {0}°'}" />
+                <Label Text="{Binding Item.Clouds, StringFormat='Cloudiness: {0}%'}" />
+                <Label Text="{Binding Item.Uvi, StringFormat='Max UV Index: {0}'}" />
+                <Label Text="{Binding Weather[0].Icon, StringFormat='Max UV Index: {0}'}" />          
+            </StackLayout>
+        </Frame>
+    </ScrollView>
+</ContentPage>

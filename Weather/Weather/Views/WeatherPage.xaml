@@ -4,6 +4,7 @@
              x:Class="Weather.Views.WeatherPage"
              Title="{Binding Title}"
              xmlns:local="clr-namespace:Weather.Helpers"
+             xmlns:viewModel="clr-namespace:Weather.ViewModels"  
              Shell.NavBarIsVisible="False">
 
     <ContentPage.Resources>
@@ -109,7 +110,16 @@
                                 <Image Grid.Column="2"  Source="{Binding Weather[0].Icon, Converter={StaticResource WeatherImageConverter},ConverterParameter='2'}" HeightRequest="40"/>
                             </Grid>
                         </Frame>
-                    </StackLayout>
+
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                NumberOfTapsRequired="1"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:WeatherViewModel}}, Path=ItemTapped}"		
+                                CommandParameter="{Binding .}">
+                                </TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+
+                        </StackLayout>
                 </DataTemplate>
             </BindableLayout.ItemTemplate>
         </StackLayout>

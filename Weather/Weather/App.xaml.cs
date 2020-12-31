@@ -14,8 +14,8 @@ namespace Weather
             InitializeComponent();
 
             DependencyService.Register<MockDataStore>();
-            DependencyService.Register<IApiService,ApiService>(); //NAO DÁ, VER
-            //DependencyService.Register<ApiService>();
+            DependencyService.Register<IApiService,ApiService>();
+
             MainPage = new AppShell();
         }
 
