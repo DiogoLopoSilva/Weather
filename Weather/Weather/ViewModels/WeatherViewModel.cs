@@ -152,8 +152,8 @@ namespace Weather.ViewModels
 
             if (Connectivity.NetworkAccess != NetworkAccess.Internet)
             {
-                await App.Current.MainPage.DisplayAlert("ERROR", "Error message", "Accept");
-                return;
+                await App.Current.MainPage.DisplayAlert("ERROR", "No connection found", "Accept");
+                Process.GetCurrentProcess().CloseMainWindow();
             }
 
             try
@@ -164,8 +164,8 @@ namespace Weather.ViewModels
 
                 if (_currentLocation == null)
                 {
-                    await App.Current.MainPage.DisplayAlert("ERROR", "Error message", "Accept");
-                    return;
+                    await App.Current.MainPage.DisplayAlert("ERROR", "Current location not found", "Accept");
+                    Process.GetCurrentProcess().CloseMainWindow();
                 }
 
                 var result = await Geocoding.GetPlacemarksAsync(_currentLocation);
