@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"        
+             x:Class="Weather.Views.WeatherPage"
+             Title="{Binding Title}"
+             xmlns:local="clr-namespace:Weather.Helpers"
+             Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <local:DateConverter x:Key="DateConverter"/>
+        <local:WeatherImageConverter x:Key="WeatherImageConverter"/>
+        <local:BackgroundConverter x:Key="BackgroundConverter"/>
+    </ContentPage.Resources>
+  
+    <Grid RowSpacing="5" Margin="0,5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Frame BackgroundColor="#343235"  Margin="5,0,5,0" Grid.Row="0" Grid.RowSpan="2" CornerRadius="10" Padding="20,10" HasShadow="True">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Text="{Binding City}" 
+                            LineBreakMode="NoWrap" FontSize="20" />
+                <SearchBar Grid.Column="1" HeightRequest="20" HorizontalOptions="End" WidthRequest="300" VerticalOptions="Start"
+                           SearchCommand="{Binding SearchCommand}" Placeholder="Search for a City..." FontSize="16" PlaceholderColor="White" TextColor="White"
+                Text="{Binding Search}"/>
+            </Grid>
+          
+        </Frame>
+        <Frame Grid.Row="1" Margin="5,0,5,0" Padding="20" x:Name="WeatherBackground" BackgroundColor="{Binding WeatherData.Current, Converter={StaticResource BackgroundConverter}}" HasShadow="True" CornerRadius="10">
+            <StackLayout>
+
+                <Grid VerticalOptions="CenterAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackLayout Spacing="0" Grid.Column="0">
+
+                        <Label  Text="{Binding WeatherData.Current.Dt, Converter={StaticResource DateConverter}, ConverterParameter='Weekday'}" 
+                            LineBreakMode="NoWrap" FontSize="24" />
+                        <Label    Text="{Binding WeatherData.Current.Temp, StringFormat='{0:N0}°C'}" Margin="10,0"
+                            LineBreakMode="NoWrap" FontSize="60" FontAttributes="Bold"/>
+                    </StackLayout>
+                    <Image Grid.Column="1" Source="{Binding WeatherData.Current.Weather[0].Icon, Converter={StaticResource WeatherImageConverter}}"/>
+                </Grid>
+
+                <Grid VerticalOptions="End">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="AUTO"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <BoxView Grid.Row="0"
+                         Color="AliceBlue"
+                         CornerRadius="10"
+                         HeightRequest="1" 
+                         VerticalOptions="Center"/>
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackLayout  Grid.Column="0" Orientation="Horizontal" HorizontalOptions="Start" >
+                            <Label Text="{Binding WeatherData.Current.Dt, Converter={StaticResource DateConverter},ConverterParameter='short'}" 
+                            LineBreakMode="NoWrap" FontSize="14"/>
+
+                        </StackLayout>
+
+                        <StackLayout Grid.Column="1" Orientation="Horizontal" HorizontalOptions="Center" >
+                            <Label Text="{Binding WeatherData.Current.Weather[0].Description}" 
+                            LineBreakMode="NoWrap" FontSize="14"/>
+                        </StackLayout>
+                    </Grid>
+
+                    <BoxView Grid.Row="2"
+                         Color="AliceBlue"
+                         CornerRadius="10"
+                         HeightRequest="1"/>
+                </Grid>
+            </StackLayout>
+        </Frame>
+        
+        <ScrollView Grid.Row="2">
+            <StackLayout BindableLayout.ItemsSource="{Binding DailyData}" Grid.Row="1" Margin="5,0">
+            <BindableLayout.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout VerticalOptions="FillAndExpand">
+                            <Frame BackgroundColor="{Binding BackgroundColor, Source={x:Reference WeatherBackground}}" CornerRadius="10" HasShadow="True" HeightRequest="50">
+                                <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0"  Text="{Binding Dt, Converter={StaticResource DateConverter},ConverterParameter='Weekday'}" 
+                            LineBreakMode="NoWrap" FontSize="18" FontAttributes="Bold" VerticalOptions="Center"/>
+
+                                <Label Grid.Column="1" Text="{Binding Temp.Day, StringFormat='{0:N0}°C'}"
+                            LineBreakMode="NoWrap" FontSize="24" FontAttributes="Bold" VerticalOptions="Center"/>
+                                <Image Grid.Column="2"  Source="{Binding Weather[0].Icon, Converter={StaticResource WeatherImageConverter},ConverterParameter='2'}" HeightRequest="40"/>
+                            </Grid>
+                        </Frame>
+                    </StackLayout>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </StackLayout>
+        </ScrollView>
+        
+        <ActivityIndicator IsRunning="{Binding IsBusy}" 
+                           IsVisible="{Binding IsBusy}"
+                           Color="{StaticResource BackgroundDay}"/>
+       
+
+    </Grid>
+  
+</ContentPage>

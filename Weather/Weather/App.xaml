@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Weather.App">
+    <!--
+        Define global resources and styles here, that apply to all pages in your app.
+    -->
+    <Application.Resources>
+        <ResourceDictionary>
+            <x:String x:Key="UrlAPI">https://api.openweathermap.org/</x:String>
+            <x:String x:Key="APIKey">6e67865717bee576ea3d273cfda707ef</x:String>
+
+
+            <Color x:Key="Primary">#2196F3</Color>
+            <Color x:Key="BackgroundDay">#3FA8C0</Color>
+            <Color x:Key="BackgroundNight">#1b6581</Color>
+
+            <OnPlatform x:Key="WeatherFont"
+            x:TypeArguments="x:String">
+                <On Platform="iOS, Android">Weather2</On>
+                <On Platform="UWP">Weather2</On>
+            </OnPlatform>
+
+            <OnPlatform x:Key="WeatherFontSize"
+            x:TypeArguments="x:Double">
+                <On Platform="iOS">24</On>
+                <On Platform="Android, UWP">24</On>
+            </OnPlatform>
+
+            <Style TargetType="Label">
+                <Setter Property="FontFamily" Value="{StaticResource WeatherFont}"></Setter>
+                <Setter Property="TextColor" Value="White"></Setter>
+                <Setter Property="FontSize" Value="{StaticResource WeatherFontSize}"></Setter>
+                <Setter Property="TextTransform" Value="Uppercase"></Setter>
+            </Style>
+                        
+            <Style TargetType="Button">
+                <Setter Property="TextColor" Value="White"></Setter>
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Disabled">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#332196F3" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+        </ResourceDictionary>        
+    </Application.Resources>
+</Application>
